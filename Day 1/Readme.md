@@ -3,6 +3,7 @@
 
 - Önemli olan neyin nerede kullanılacağını bilmek. Örneğin Unit Testin nereye yazılmasını bilmek önemli, nasıl yazıldığını ezberlemek değil.
 
+
 - Model-View-Controller(MVC) Design Pattern
 Günümüzde web ve API tarafında çok yaygın kullanılır. Ancak daha modüler, performanslı ve sürdürülebilir projeler için bu patternı terk edeceğiz.
 
@@ -16,6 +17,13 @@ Günümüzde web ve API tarafında çok yaygın kullanılır. Ancak daha modüle
 Business tam manasıyla Database(repository)den aldığı ham veri üzerinde işlem yapan ve döndürendir.
 
 **View:** HTML, CSS, JS - bu kursun içeriğine dahil değil.
+
+### Notlar:
+- dotnet new list ile hangi proje tipini oluşturabileceğimiz listelenir
+- [kurs1-mustknow](https://www.udemy.com/course/net-core-developer-bilmesi-gereken-kutuphaneler-konular/)
+- [kurs2-jwt](https://www.udemy.com/course/aspnet-core-api-token-bazli-kimlik-dogrulama-jwt/)
+- [kurs3-nlayer](https://www.udemy.com/course/asp-net-core-api-web-cok-katmanli-mimari-api-best-practices/)
+- [kurs4-c#](https://www.udemy.com/course/csharp-bilgimi-gelistiriyorum-sorular-ve-cevaplar-ile/)
 
 ### Araştır:
 - MinimalAPI ve FastEndpoint libraryler > Must learn APIs
@@ -31,10 +39,10 @@ Her API ve web uygulaması cachelenmeye uygundur.
 - Türkiye'de bir web projesi canlıya alınırken hosting firmasından 1. API için 2. Web Uygulaması için ayrı ayrı hosting alınıyor. Web uygulaması API ile haberleşir. Ayrıca tek bir VM ile istenilen sayıda uygulama dış dünyaya açılabilir.
 
 # ASP.NET Core Web API Projesi
-Authentication, authorization, logging, vs hepsi merkezde toplanır ve güvenlik artar(Cros-cutting concern)
+Authentication, authorization, logging, vs hepsi merkezde toplanır ve güvenlik tek bir elden yönetilir(Cros-cutting concern)
 ![CrossCuttingConcern](ccc.png)
 
-- Connected Services: DB'ler için hazır servisler bulunur.
+- Connected Services: DB'ler için hazır servisler bulunur. Azure, SQLite, PostgreSQL, MongoDB, RabbitMQ, vs.
 - Dependencies:
     - Analyzers: .NET core ile roslyn derleyicisine geçildi. Yazılan kodlarda statik olarak analiz yapılabiliyor ve compiler uyarı yapıyor. Bu kurallar Analyzers'ta bulunur.
     - Frameworks: Paket sepeti => içerisinde birçok paket bulunuyor. Sadece console app ise .NETCore.App, API ile ilgili paketler gelince AspNetCore.App eklenir.
@@ -42,3 +50,4 @@ Authentication, authorization, logging, vs hepsi merkezde toplanır ve güvenlik
 - Properties
     - launchSettings.json: Development ortamı ile ilgili ayarları içeren dosya. .yaml dosyası olarak kullanılması daha okunaklı yapar(gelecekte geçilecek gibi duruyor). *Kestrel* sunucusu ile cross-platform, *IIS* ile sadece Windows serverlarda çalışır(eski). .NET Core ile Kestrel otomatik olarak gelir. Kubernetes, **Docker** hep Linux sunucu(bedava, güvenlik konfigürasyonları, paket desteği). https => Server-Client veri iletiminde SSL sertifikaları ile güvenliği sağlar. Canlıda 443 portunu kullanır. http'de 80 portu kullanılır(resmi olarak belirlenmiştir).
 
+Controller'daki **ActionMethod** geri dönüş tipinde metodlar dış dünyaya açılan ve başka uygulamalar tarafından çağrılabilen **Endpointlerimiz** oluyor. API'mize istek atan her uygulamaya **client** denir. Client örnekleri: Postman, tarayıcı, mobil ekip, Angular ekibi, akıllı tv, vs.
