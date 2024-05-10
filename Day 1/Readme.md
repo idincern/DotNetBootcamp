@@ -13,18 +13,27 @@ Günümüzde web ve API tarafında çok yaygın kullanılır. Ancak daha modüle
 
 **Model:** Business ve Veritabanı ile ilgili işlemlerin yapıldığı yer.
 - Repository(R) Katmanı = Data Access Layer(DAL) => DB işlemleri
-- Service(S) Katmanı = Business Logic(BL) => Operasyon/metod/algoritma
-Business tam manasıyla Database(repository)den aldığı ham veri üzerinde işlem yapan ve döndürendir.
+- Service(S) Katmanı = Business Logic(BL) => Operasyon/metod/algoritma.
+
+--> Controller ve Repository'de try-catch bloğu bulunmaz, bulunacak kod kullanılmaz.
+
+--> Business tam manasıyla Database(repository)den aldığı ham veri üzerinde işlem yapan ve döndürendir.
 
 **View:** HTML, CSS, JS - bu kursun içeriğine dahil değil.
 
 ### Notlar:
 - dotnet new list ile hangi proje tipini oluşturabileceğimiz listelenir
 - Bir mikroservis mimaride Identity API'sinde(kullanıcının login-logout işlemlerini gerçekleştirdiği) UI olabilir(Hibrit uygulama). Token authentication and authorization sırasında.
-- [kurs1-mustknow](https://www.udemy.com/course/net-core-developer-bilmesi-gereken-kutuphaneler-konular/)
-- [kurs2-jwt](https://www.udemy.com/course/aspnet-core-api-token-bazli-kimlik-dogrulama-jwt/)
-- [kurs3-nlayer](https://www.udemy.com/course/asp-net-core-api-web-cok-katmanli-mimari-api-best-practices/)
-- [kurs4-c#](https://www.udemy.com/course/csharp-bilgimi-gelistiriyorum-sorular-ve-cevaplar-ile/)
+- dotnet build ile IL kod oluşur, .exe dosyası çalıştığında da JIT devreye girer ve kod ikinci kez derlenip makine koduna dönüşür.
+```cs
+public Products? GetById(int id) => _products.Find(x => x.Id == id); // nullable olduğu için Products nesnesi dönmeyebilir de
+```
+İlişkili kodlar birbiriyle yakın yerde-classta-fonksiyonda => Kohezyon yüksek
+Ayrıca coupling düşük => Best Practice kod
+- [Kurs 1-Mustknow](https://www.udemy.com/course/net-core-developer-bilmesi-gereken-kutuphaneler-konular/)
+- [Kurs 2-JWT](https://www.udemy.com/course/aspnet-core-api-token-bazli-kimlik-dogrulama-jwt/)
+- [Kurs 3-NLayer](https://www.udemy.com/course/asp-net-core-api-web-cok-katmanli-mimari-api-best-practices/)
+- [Kurs 4-C#](https://www.udemy.com/course/csharp-bilgimi-gelistiriyorum-sorular-ve-cevaplar-ile/)
 
 ### Araştır:
 - MinimalAPI ve FastEndpoint libraryler > Must learn APIs
@@ -79,3 +88,20 @@ Bu metodlar daha temiz endpoint isimlendirmemizi sağlar.
 ### 3) **Put:** Clientler sunucudaki(bizdeki) data güncelleyecek.
 ### 4) **Delete:** Clientler sunucudan(bizden) data silecek.
 ### 5) **Patch:** Kısmi update
+
+## HTTP Kodları
+Response'da Header ve Body bulunur.
+### 1xx Bilgilendirme(Information)
+### 2xx Başarı(Success)
+-   *200* Ok
+-   *201* Created => Örn: Oluşturulan ürünün Id'si geri dönülebilir.
+-   *204 No Content =>>> Update/Delete işlemlerinde no-content(body boş) dönülür. !!!*
+### 3xx Yönlendirme(Redirect)
+### 4xx Client Error
+-   *400* Bad Request => Client yanlış şifre göndermiş(Aa2! olmalı), gönderilen id formatı yanlış => Client'ın hatası.
+-   *401* Unauthorized => Tokenla korunan endpoint, herkes istek yapamaz.
+-   *403* Forbid => Tokenı var, ama admin yetkisi yok.
+-   *404* Not Found => Client veritabanında olmayan veriyi isterse(Örn: Id=999) ve veri serverda yoksa.
+### 5xx Server Error
+-   *500* Internal Server Error => İç sistemdeki hatalar. Client istekte bulundu ancak Db'ye bağlanamadık ya da her türlü exception hatası.
+-   *503* Service unavailable => Sistem deadlocktaysa ya da uygulama yeni ayağa kalkarken istek gelirse.
