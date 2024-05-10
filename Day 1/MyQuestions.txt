@@ -1,0 +1,1 @@
+- MikroJump gibi programları linux serverda çalıştırabilir miyiz?
