@@ -20,6 +20,7 @@ Business tam manasıyla Database(repository)den aldığı ham veri üzerinde i�
 
 ### Notlar:
 - dotnet new list ile hangi proje tipini oluşturabileceğimiz listelenir
+- Bir mikroservis mimaride Identity API'sinde(kullanıcının login-logout işlemlerini gerçekleştirdiği) UI olabilir(Hibrit uygulama). Token authentication and authorization sırasında.
 - [kurs1-mustknow](https://www.udemy.com/course/net-core-developer-bilmesi-gereken-kutuphaneler-konular/)
 - [kurs2-jwt](https://www.udemy.com/course/aspnet-core-api-token-bazli-kimlik-dogrulama-jwt/)
 - [kurs3-nlayer](https://www.udemy.com/course/asp-net-core-api-web-cok-katmanli-mimari-api-best-practices/)
@@ -70,3 +71,11 @@ Authentication, authorization, logging, vs hepsi merkezde toplanır ve güvenlik
 
     Bunun ayarı da launchSettings.json dosyasında set edilen "environmentVariables":{"ASPNETCORE_ENVIRONEMNT" : "Development"} ile yapılır. Production ve Staging de seçilebilir.
 ```
+## HTTP Metod Seçimi
+İstek yaparken en çok karşılaşılan 4 tip metod vardır.
+Bu metodlar daha temiz endpoint isimlendirmemizi sağlar.
+### 1) **Get:** Clientler sunucudan(bizden) data alacak.
+### 2) **Post:** Clientler sunucuya(bize) data kaydedecek.
+### 3) **Put:** Clientler sunucudaki(bizdeki) data güncelleyecek.
+### 4) **Delete:** Clientler sunucudan(bizden) data silecek.
+### 5) **Patch:** Kısmi update
