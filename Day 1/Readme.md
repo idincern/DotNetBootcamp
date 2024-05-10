@@ -43,11 +43,30 @@ Authentication, authorization, logging, vs hepsi merkezde toplanır ve güvenlik
 ![CrossCuttingConcern](ccc.png)
 
 - Connected Services: DB'ler için hazır servisler bulunur. Azure, SQLite, PostgreSQL, MongoDB, RabbitMQ, vs.
-- Dependencies:
-    - Analyzers: .NET core ile roslyn derleyicisine geçildi. Yazılan kodlarda statik olarak analiz yapılabiliyor ve compiler uyarı yapıyor. Bu kurallar Analyzers'ta bulunur.
-    - Frameworks: Paket sepeti => içerisinde birçok paket bulunuyor. Sadece console app ise .NETCore.App, API ile ilgili paketler gelince AspNetCore.App eklenir.
-    - Packages: Projeye eklenen paketler(eski adı library). **Swagger OpenAPI Integration** => Endpointlerimizin hazır dokümentasyonunu oluşturmayı sağlar. Ortak bir kural seti oluşturur. Java, Python ve .Net için de aynı sonuç gösterilir. Projedeki Packages içindeki Swashbuckle.AspNetCore paketi tarafından UI oluşturulur. Ekiplerarası testi kolaylaştırıyor.
-- Properties
+- **Dependencies:**
+    - **Analyzers**: .NET core ile roslyn derleyicisine geçildi. Yazılan kodlarda statik olarak analiz yapılabiliyor ve compiler uyarı yapıyor. Bu kurallar Analyzers'ta bulunur.
+    - **Frameworks**: Paket sepeti => içerisinde birçok paket bulunuyor. Sadece console app ise .NETCore.App, API ile ilgili paketler gelince AspNetCore.App eklenir.
+    - **Packages**: Projeye eklenen paketler(eski adı library). **Swagger OpenAPI Integration** => Endpointlerimizin hazır dokümentasyonunu oluşturmayı sağlar. Ortak bir kural seti oluşturur. Java, Python ve .Net için de aynı sonuç gösterilir. Projedeki Packages içindeki Swashbuckle.AspNetCore paketi tarafından UI oluşturulur. Ekiplerarası testi kolaylaştırıyor.
+- **Properties:**
     - launchSettings.json: Development ortamı ile ilgili ayarları içeren dosya. .yaml dosyası olarak kullanılması daha okunaklı yapar(gelecekte geçilecek gibi duruyor). *Kestrel* sunucusu ile cross-platform, *IIS* ile sadece Windows serverlarda çalışır(eski). .NET Core ile Kestrel otomatik olarak gelir. Kubernetes, **Docker** hep Linux sunucu(bedava, güvenlik konfigürasyonları, paket desteği). https => Server-Client veri iletiminde SSL sertifikaları ile güvenliği sağlar. Canlıda 443 portunu kullanır. http'de 80 portu kullanılır(resmi olarak belirlenmiştir).
 
-Controller'daki **ActionMethod** geri dönüş tipinde metodlar dış dünyaya açılan ve başka uygulamalar tarafından çağrılabilen **Endpointlerimiz** oluyor. API'mize istek atan her uygulamaya **client** denir. Client örnekleri: Postman, tarayıcı, mobil ekip, Angular ekibi, akıllı tv, vs.
+- **Controller:**
+  Routing mekanizmasını yöneten classlardır. **ActionMethod** geri dönüş tipinde metodları dış dünyaya açılan ve başka uygulamalar tarafından çağrılabilen **Endpointlerimiz**'dir. API'mize istek atan her uygulamaya **client** denir. Client örnekleri: Postman, tarayıcı, mobil ekip, Angular ekibi, akıllı tv, vs.
+
+    **FatController** => Controller'da herhangi bir Business Logic varsa söylenen böyle denir. Try-Catch, transaction, vs. bile olamaz. Controllerda sadece **Request**i kabul et ve tek satırla modele git fonksiyonu olmalıdır.
+- **appsettings.json:**
+    Uygulamamızın konfigüre edildiği yer. Global olarak DB bağlantı yolları, SMS bağlantı yolları, özellikle **ConnectionString**'ler burada tanımlanır. Burası da güvenli bir yer değildir ancak buraya yazılan bir ConnectionString environment değişkenlerle ezilebilir(**environment değişkenlerle=>*güvenli-> Azure Keyvault, Docker, Kubernetes***) canlı dbninkiyle yer değiştirilebilir. Bu şekilde güvenliğini sağlarız. Alt kümesinde Development, Staging ve Production tipleri olabilir. Bu onların base halidir. Ortak bir kısım varsa burada tanımla, değişen kısımları onların içine al(Örn: ConnectionStrings).
+- **.http Dosyası:**
+    Endpointleri hızlı bir şekilde test etmek için Visual Studio IDE'sine gelen yeni bir dosya. Development sırasında test için kullanılır. Diğer ekiplerle çalışırken yine Swagger, Postman gerekli.
+- **program.cs:**
+    İşletim sisteminde ayağa kalkan sunu ile etkileşime giren yerdir. Uygulamanın kalbi, nasıl bir ortamda çalışacağı ile ilgili bütün kodlar burada yazılır. Hangi DB'ye bağlanacak, hangi cache sistemine gidecek, nasıl bir konfigürasyonla ayağa kalkacak, vs. hepsi burada kontrol edilir. Önceden Startup.cs de vardı(.NET 6.0 öncesi).
+
+## Environment
+- **Production**
+- **Staging(test)**
+- **Development**
+```
+    Amaç, uygulamanın test, canlı, lokal gibi ortamlarda ayağa kaldırılarak her bir ortamda farklı bir davranış sergilemesidir. Bu sayede kodlarda değişiklik yapılmadan istediğimiz ortamda istediğimiz DB'ye bağlanabiliriz. Bunun için appsettings.**Development**.json, appsettings.**Production**.json, vb. dosyalar oluştururuz. Örneğin development ortamında demo bir DB'ye bağlanırken uygulama *Publish* edildikten sonra canlı DB'ye bağlanır.
+
+    Bunun ayarı da launchSettings.json dosyasında set edilen "environmentVariables":{"ASPNETCORE_ENVIRONEMNT" : "Development"} ile yapılır. Production ve Staging de seçilebilir.
+```

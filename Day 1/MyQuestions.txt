@@ -1,1 +1,2 @@
 - MikroJump gibi programları linux serverda çalıştırabilir miyiz?
+- Soru cevap kısmına katılamadım Environment Variables ve connectionstrings arasındaki ilişkiden bahsetmiş miydiniz?
