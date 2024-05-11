@@ -112,3 +112,5 @@ Kullanıcıya sipariş no olarak guid gönder-(uniqueliği sağlar) ancak ikinci
 
 ### Also Encode first and Decode later - (don't include / . <>  for URL encoding)
 ![alt text](image-5.png)
+
+### Primary key ile veri arayan DB: ElasticSearch - tüm sütun alanları indexlenir, kibana ile görselleştirilir => hocanın udemy dersini izle
