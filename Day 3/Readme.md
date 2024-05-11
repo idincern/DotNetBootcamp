@@ -108,4 +108,7 @@ Kullanıcıya sipariş no olarak guid gönder-(uniqueliği sağlar) ancak ikinci
 ![URL'de Şifreleme](image-1.png)
 
 ### Time Limited Encryption
-![alt text](image-2.png)
+![alt text](image-3.png)
+
+### Also Encode first and Decode later - (don't include / . <>  for URL encoding)
+![alt text](image-5.png)
