@@ -100,6 +100,12 @@ Dapper, ham SQL cümleciğinden aldığı nesneyi otomatik olarak bizim classlar
 
 ### Not: **Strategy Design Pattern:** Runtime'da algoritma değişebilen design pattern. **Örn:** Üyelere hızlı video indirme seçeneği, diğerlerine yavaş.
 
-### Not:
+### Not: Endpoint with Guid
 ![Endpoint with guid](image.png)
 Kullanıcıya sipariş no olarak guid gönder-(uniqueliği sağlar) ancak ikinci bir sütunda id değerini tut ve kendi iç metodlarında kullan.
+
+### Not:  URL'de Şifreleme
+![URL'de Şifreleme](image-1.png)
+
+### Time Limited Encryption
+![alt text](image-2.png)
