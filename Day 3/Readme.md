@@ -97,20 +97,41 @@ add-migration check // Örnek migration ismi "check"=> Eğer Up() ve Down() boş
 Dapper, ham SQL cümleciğinden aldığı nesneyi otomatik olarak bizim classlarımıza mapler. Performanslıdır, join'in çok olduğu yerde kullanılabilir(EF Core memory kullanarak bunu yapar daha yavaştır). Bu yüzden hızın önemli olduğu yerde Dapper kullanılmalı.
 
 
-
 ### Not: **Strategy Design Pattern:** Runtime'da algoritma değişebilen design pattern. **Örn:** Üyelere hızlı video indirme seçeneği, diğerlerine yavaş.
 
 ### Not: Endpoint with Guid
 ![Endpoint with guid](image.png)
 Kullanıcıya sipariş no olarak guid gönder-(uniqueliği sağlar) ancak ikinci bir sütunda id değerini tut ve kendi iç metodlarında kullan.
 
-### Not:  URL'de Şifreleme
+### Not:  URL'de basic Şifreleme
 ![URL'de Şifreleme](image-1.png)
 
-### Time Limited Encryption
-![alt text](image-3.png)
+### Time Limited Encryption with Encoding/Decoding(don't include / . <>  for URL encoding)
+```cs
+[HttpGet("SifreleMustafa")]
+public IActionResult SifreleMustafa(string a)
+{
+    var dataProtected = _dataProtector.ToTimeLimitedDataProtector();
 
-### Also Encode first and Decode later - (don't include / . <>  for URL encoding)
-![alt text](image-5.png)
 
+    return Ok(Base64UrlEncoder.Encode(dataProtected.Protect(a, TimeSpan.FromSeconds(30))));
+    // return Ok(_dataProtector.Protect(a));
+}
+
+[HttpGet("GetAllMustafa")]
+public IActionResult GetAllMustafa(string a)
+{
+    var decode = Base64UrlEncoder.Decode(a);
+
+    // var unProtectData = _dataProtector.Unprotect(a);
+    var dataProtected = _dataProtector.ToTimeLimitedDataProtector();
+
+
+    return Ok(dataProtected.Unprotect(decode));
+}
+```
 ### Primary key ile veri arayan DB: ElasticSearch - tüm sütun alanları indexlenir, kibana ile görselleştirilir => hocanın udemy dersini izle
+
+### Bir kullanıcının girişine ve yaptığı işleme ait log üretildiğinde logu md5 algoritmasına sok, hashini al ve daha sonra ilerde kontrol için kullanabilirsin.
+
+![alt text](image-6.png)
