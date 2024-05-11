@@ -19,3 +19,30 @@ NOT:
 
 
 ### Entitylerde asla UI validasyonu yapılmayacak! DTO'lar için yazılabilir(basit controllerlar için)
+
+- Fast fail and Guard Clauses => önce olumsuz kısmı if ile kontrol et sonrasında doğru kısma geç işlemlere devam et.
+
+### FluentValidation => .NET ile ilgili tüm projelerde kullanılmalı.
+```cs
+RuleFor(x=>x.Price).InclusiveBetween(1,1000).WithMessage("Fiyat 1 ile 1000 arasında olabilir");
+```
+
+```cs
+RuleFor(x=>x.IdentityNo).Length(11).WithMessage("TC no 11 haneli olmalıdır").Must(CheckIdentityNo).WithMessage("TC numarası hatalıdır");
+
+### Delegates
+- Action => void
+- Predicate => bool
+- Func => dynamic
+
+public bool CheckIdentityNo(string idedntityNo)
+{
+    /// ......
+
+    return true;
+}
+```
+
+### Not: Basit validationlar için FluentValidation kullanabiliriz. Karmaşık işlemler için servislerin içinde validation yapabiliriz.
+
+### Tüm .NET Winforms ve WPF gibi projelerinde DIContainer olarak **Autofac** kullan 3rd party kütüphane.
