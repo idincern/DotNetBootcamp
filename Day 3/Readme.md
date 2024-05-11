@@ -77,11 +77,29 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 // OnModelCreating method is used to configure the model that EF Core will use to create the database schema. This method is typically overridden in your DbContext class to define the shape of your database entities, their relationships, and various constraints.
 ```
 
-ef core tools nuget paketi yüklendikten sonra
-add-migration [migration-name]
+EF Core tools nuget paketi yüklendikten sonra
 
-.... 4 komut ile entitymiz MSSQL'e yükleniyor.
-Yapılan her değişiklik için migration eklenir.
-Geri almak için
+- add-migration [migration-name]
+- update-database
+
+ile entitymiz MSSQL'e yükleniyor.
+
+
+Yapılan her değişiklik için migration eklenir. Up() ve Down() metodları otomatik oluşur. Yüklerken Up() çalışır, geri almak için Down() çalışır.
+
+remove-migration // En son migrationu siler(veritabanına yansımamış olanı)
+
+update-database [migration-name]  yapılarak initial migrationa kadar dönüş yapılabilir. Bu sayede yapılan değişiklikler geri alınabilir/tam tersi de geçerlidir.
+
+add-migration check // Örnek migration ismi "check"=> Eğer Up() ve Down() boşsa DB ile senkronuz demektir. Bu şekilde kontrol edebilirsin.
+
 ### **Dapper** for mini ORM 👍
 Dapper, ham SQL cümleciğinden aldığı nesneyi otomatik olarak bizim classlarımıza mapler. Performanslıdır, join'in çok olduğu yerde kullanılabilir(EF Core memory kullanarak bunu yapar daha yavaştır). Bu yüzden hızın önemli olduğu yerde Dapper kullanılmalı.
+
+
+
+### Not: **Strategy Design Pattern:** Runtime'da algoritma değişebilen design pattern. **Örn:** Üyelere hızlı video indirme seçeneği, diğerlerine yavaş.
+
+### Not:
+![Endpoint with guid](image.png)
+Kullanıcıya sipariş no olarak guid gönder-(uniqueliği sağlar) ancak ikinci bir sütunda id değerini tut ve kendi iç metodlarında kullan.
