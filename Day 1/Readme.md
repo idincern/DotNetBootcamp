@@ -15,17 +15,42 @@ Günümüzde web ve API tarafında çok yaygın kullanılır. Ancak daha modüle
 - Repository(R) Katmanı = Data Access Layer(DAL) => DB işlemleri
 - Service(S) Katmanı = Business Logic(BL) => Operasyon/metod/algoritma.
 
---> Controller ve Repository'de try-catch bloğu bulunmaz, bulunacak kod kullanılmaz.
+- Controller ve Repository'de try-catch bloğu bulunmaz, bulunacak kod kullanılmaz.
 
---> Service katmanı hiçbir zaman entity dönmez, DTO(Data Transfer Object) döner(ara-obje). Bu sayede asıl repodaki datayı engellemiş oluyoruz.
+- Service katmanı hiçbir zaman entity dönmez, DTO(Data Transfer Object) döner(ara-obje). Bu sayede asıl repodaki datayı engellemiş oluyoruz.
 
---> record yapısı DTO'larda kullanılır ki referansa göre değil valueya göre karşılaştırma yapılabilsin.
+- record yapısı DTO'larda kullanılır ki referansa göre değil valueya göre karşılaştırma yapılabilsin.
 
---> Recordlarda get; set; yerine get; init; olarak kullanılır ki bir nesne alındıktan sonra değeri bir daha değiştirilemesin.
+- Recordlarda get; set; yerine get; init; olarak kullanılır ki bir nesne alındıktan sonra değeri bir daha değiştirilemesin.
 
---> String ifadeleri =default!  yaparak null olamayacağını belirtmiş oluruz.
+- String ifadeleri = default!  yaparak null olamayacağını belirtmiş oluruz.
 
---> Business tam manasıyla Database(repository)den aldığı ham veri üzerinde işlem yapan ve döndürendir.
+- Business tam manasıyla Database(repository)den aldığı ham veri üzerinde işlem yapan ve döndürendir.
+
+- HTTP metodlarının geri dönüşlerini sistematik bir şekilde oluşturmak için generic bir ResponseModel recordu oluşturulur.
+```cs
+public struct NoContent; // Value type for no content response
+public record ResponseModelDto<T>
+{
+    public T? Data{get; set;};
+    [JsonIgnore] // API isteği çağrıldğında response Json datasına konmamasını sağlayan attribute. Biz Service-> Controller arasında kullanıyoruz.
+    public bool IsSuccess{get; set;}
+    public List<string>? FailMessage{get; set;}
+}
+```
+- new()'lemeyi kontrol altına almak için 5 tane creation design pattern vardır.
+```
+1)Singleton
+2)FactoryMethod
+3)AbstractFactory
+4)Builder
+5)Prototype
+```
+- Bu eğitimde new()'i kontrol altına almak için static factory methodlar yazıldı. Success(Data), Success-NoContent, Fail ve Fail(liste) için.
+
+- İlişkili kodlar birbiriyle yakın yerde-classta-fonksiyonda => Kohezyon yüksek
+
+- Coupling düşük => Best Practice kod
 
 **View:** HTML, CSS, JS - bu kursun içeriğine dahil değil.
 
@@ -36,8 +61,12 @@ Günümüzde web ve API tarafında çok yaygın kullanılır. Ancak daha modüle
 ```cs
 public Products? GetById(int id) => _products.Find(x => x.Id == id); // nullable olduğu için Products nesnesi dönmeyebilir de
 ```
-İlişkili kodlar birbiriyle yakın yerde-classta-fonksiyonda => Kohezyon yüksek
-Ayrıca coupling düşük => Best Practice kod
+- ProductsDto immutable list döndüğü ve record tipinde olduğu için ilk atanma haricinde değeri değiştirilemez. Bunun yerine *with* keywordüyle yeni bir record nesnesi tanımlanıp ona değer atanabilir.
+```cs
+var products = _productService.GetAllWithTax(); // ImmutableList<ProductDto>
+var newProduct = products[0] with {Id = 20, Name="New Product"};✅
+```
+
 - [Kurs 1-Mustknow](https://www.udemy.com/course/net-core-developer-bilmesi-gereken-kutuphaneler-konular/)
 - [Kurs 2-JWT](https://www.udemy.com/course/aspnet-core-api-token-bazli-kimlik-dogrulama-jwt/)
 - [Kurs 3-NLayer](https://www.udemy.com/course/asp-net-core-api-web-cok-katmanli-mimari-api-best-practices/)
