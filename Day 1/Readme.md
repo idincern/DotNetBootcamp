@@ -19,6 +19,10 @@ Günümüzde web ve API tarafında çok yaygın kullanılır. Ancak daha modüle
 
 --> Service katmanı hiçbir zaman entity dönmez, DTO(Data Transfer Object) döner(ara-obje). Bu sayede asıl repodaki datayı engellemiş oluyoruz.
 
+--> record yapısı DTO'larda kullanılır ki referansa göre değil valueya göre karşılaştırma yapılabilsin.
+
+--> Recordlarda get; set; yerine get; init; olarak kullanılır ki bir nesne alındıktan sonra değeri bir daha değiştirilemesin.
+
 --> String ifadeleri =default!  yaparak null olamayacağını belirtmiş oluruz.
 
 --> Business tam manasıyla Database(repository)den aldığı ham veri üzerinde işlem yapan ve döndürendir.
