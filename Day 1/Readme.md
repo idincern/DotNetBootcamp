@@ -19,6 +19,8 @@ Günümüzde web ve API tarafında çok yaygın kullanılır. Ancak daha modüle
 
 --> Service katmanı hiçbir zaman entity dönmez, DTO(Data Transfer Object) döner(ara-obje). Bu sayede asıl repodaki datayı engellemiş oluyoruz.
 
+--> String ifadeleri =default!  yaparak null olamayacağını belirtmiş oluruz.
+
 --> Business tam manasıyla Database(repository)den aldığı ham veri üzerinde işlem yapan ve döndürendir.
 
 **View:** HTML, CSS, JS - bu kursun içeriğine dahil değil.
