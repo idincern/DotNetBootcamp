@@ -141,7 +141,7 @@ Response'da Header ve Body bulunur.
 ### 1xx Bilgilendirme(Information)
 ### 2xx Başarı(Success)
 -   *200* Ok
--   *201* Created => Örn: Oluşturulan ürünün Id'si geri dönülebilir.
+-   *201* Created => Örn: Response'ın headerında oluşturulan ürünün Id'si ve dolaylı olarak oluşturulan ürünün yeni Url'i geri dönülebilir.
 -   *204 No Content =>>> Update/Delete işlemlerinde no-content(body boş) dönülür. !!!*
 ### 3xx Yönlendirme(Redirect)
 ### 4xx Client Error

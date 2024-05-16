@@ -23,7 +23,7 @@ public IActionResult GetById(int id) {...}
 public IActionResult Delete(int id) {...}
 ```
 
-## Repository'e Update ve Add Metodlarının Eklenmesi:
+## Repository'e Update ve Add(Create) Metodlarının Eklenmesi:
 ![update_add](update_add.png)
 
 ### Bu metodları karşılayabilmek için ProductRequestDto ve ProductUpdateRequest "data class/recordu" oluşturulur(sadece bize gerekli olan Name ve Price bilgisini taşımak için)
@@ -31,6 +31,16 @@ public IActionResult Delete(int id) {...}
 ![dto1](dto1.png)
 ![dto2](dto2.png)
 
-## Service'e Update ve Add Metodlarının Eklenmesi:
+## Service'e Update ve Add(Create) Metodlarının Eklenmesi:
 ![update](update.png)
+![update_wId](update_wId.png)
 ![add](add.png)
+
+## Controller'a Update ve Add(Create) Metodlarının Eklenmesi:
+
+### Update:
+![route_update](route_update.png)
+
+### Create:
+![route_create](route_create.png)
+![create_postman](create_postman.png)
