@@ -12,6 +12,10 @@ private decimal CalculateTax(decimal price, decimal tax) => (price * tax); // Bu
 
 
 ## Route Tanımlama:
+- Model Binding: ![Model Binding](model_binding.png)
+- **URL'de gizliliği önemli data taşınmamalı. Çünkü SSL dahi kullanılsa bu data şifrelenmez. Güvenli data taşıma yolu: Request/Response'ın Bodysi/Header'ı.**
+- .NET'de bulunan IDataProtected() interface'indeki metodları şifreleme konusunda kullanılabilir(Tokenlarda değinilecek).
+
 ```cs
 [HttpGet]
 public IActionResult GetAll(int id) {...}
@@ -44,3 +48,35 @@ public IActionResult Delete(int id) {...}
 ### Create:
 ![route_create](route_create.png)
 ![create_postman](create_postman.png)
+
+
+# Cyclomatic Complexity:
+Bir programın karmaşıklığını ölçmek için kullanılan bir metrik veya ölçüdür. Bu ölçüm, bir programın içinde kaç tane farklı yol veya dolaşım olduğunu belirlemeye çalışır. Programlar, genellikle farklı kararlar, döngüler ve dallanmalar içerir. Cyclomatic complexity, bu yapıları analiz ederek bir programın ne kadar karmaşık olduğunu ölçmeye çalışır.
+
+Cyclomatic complexity değeri, bir programdaki bağımsız yol sayısını belirtir. Genellikle, bu ölçüm sayesinde bir programın test edilebilirliği ve bakımı hakkında bilgi edinilebilir. Cyclomatic complexity'nin hesaplanmasında genellikle kontrol akışı grafiği kullanılır. Bu grafik, programdaki farklı kararlar, döngüler ve dallanmalar arasındaki ilişkileri görsel olarak temsil eder.
+
+Cyclomatic complexity yüksek olan bir program, daha karmaşık ve genellikle daha fazla test gerektiren bir yapıya sahip olabilir. Bu nedenle, yazılım geliştirme sürecinde bu metriği kullanarak programların karmaşıklığını değerlendirmek ve optimize etmek önemli bir rol oynar.
+
+In Visual Studio: [Analyze] -> [Calculate Code Metrics] -> [For Solution]
+
+## Her route'da if() kontrolü yapmak yerine bir tane base controller oluşturup onu miras alarak bu davranışı gerçekleştirmek best practice'dir.
+### **Not best practice:**
+
+![response_checks](response_checks.png)
+
+### **Response Model Edit:**
+![status_code_addition](status_code_addition.png)
+
+## Static Factory Methods: Success
+![static_factory_success](static_factory_success.png)
+
+## Static Factory Methods: Fail
+![static_factory_fail](static_factory_fail.png)
+
+**Ex: New Return Type for Create() Service method:**
+![create_servicev2](create_servicev2.png)
+
+**Delete ve Update => HttpStatusCode.NoContent**
+
+object => Json : Serialization
+2:19:00
