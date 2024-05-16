@@ -12,8 +12,10 @@ Günümüzde web ve API tarafında çok yaygın kullanılır. Ancak daha modüle
 **Controller:** Arabulucudur, hiçbir zaman business ile ilgili bir görevi olmamalı. Request alır, Modele ya da View'e iletir ve geriye response döner. Unit testleri, integration testleri olmaz. Sadece end to end testleri vardır.
 
 **Model:** Business ve Veritabanı ile ilgili işlemlerin yapıldığı yer.
-- Repository(R) Katmanı = Data Access Layer(DAL) => DB işlemleri
-- Service(S) Katmanı = Business Logic(BL) => Operasyon/metod/algoritma.
+## Repository(R) Katmanı = Data Access Layer(DAL) => DB işlemleri(ham data)
+![repository](repository.png)
+## Service(S) Katmanı = Business Logic(BL) => Operasyon/metod/algoritma.
+![service](service.png)
 
 - Controller ve Repository'de try-catch bloğu bulunmaz, bulunacak kod kullanılmaz.
 
