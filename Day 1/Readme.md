@@ -40,6 +40,14 @@ public record ResponseModelDto<T>
     public List<string>? FailMessage{get; set;}
 }
 ```
+### Response Model Static Factory Methods:
+
+![Methods](response_model_methods.png)
+
+![Response_Model_return](response_model.png)
+
+
+
 - new()'lemeyi kontrol altına almak için 5 tane creation design pattern vardır.
 ```
 1)Singleton

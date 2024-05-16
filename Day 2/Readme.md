@@ -5,6 +5,11 @@
 private decimal CalculateTax(decimal price, decimal tax) => (price * tax); // Bu sayede tax değeri her fonksiyonda tekrardan gönderilir. Statik/global değişkende oluşacak tax değişikliği metod çalışma mantığını etkilemez.
 ```
 - Servisteki Add metodu geriye eklenen ürünün "Id"sini döndürür.
+### Ödev:
+1) ReadOnly List - Immutable List
+2) Delegate / Event
+3) Generic Method / Class
+
 
 ## Route Tanımlama:
 ```cs
