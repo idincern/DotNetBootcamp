@@ -22,3 +22,15 @@ public IActionResult GetById(int id) {...}
 [HttpDelete]
 public IActionResult Delete(int id) {...}
 ```
+
+## Repository'e Update ve Add Metodlarının Eklenmesi:
+![update_add](update_add.png)
+
+### Bu metodları karşılayabilmek için ProductRequestDto ve ProductUpdateRequest "data class/recordu" oluşturulur(sadece bize gerekli olan Name ve Price bilgisini taşımak için)
+![dtos](dtos.png)
+![dto1](dto1.png)
+![dto2](dto2.png)
+
+## Service'e Update ve Add Metodlarının Eklenmesi:
+![update](update.png)
+![add](add.png)
