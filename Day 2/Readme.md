@@ -85,13 +85,17 @@ In Visual Studio: [Analyze] -> [Calculate Code Metrics] -> [For Solution]
 
 **Delete ve Update => HttpStatusCode.NoContent**
 
-Object => Json: Serialization
-Json => Object: Deserialization
+**Object => Json: Serialization**
+
+**Json => Object: Deserialization**
 
 # BaseController Methods:
 ObjectResult içerisine ne verilirse o tipi döner. Generic bir sınıftır. Örneğin, StatusCode olarak 200 verirsek geriye 200 döner.
+Aşağıdaki CreateActionResult metodu cyclomatic complexityi düşürmek için yazılmıştır. Mesaj tipine göre response tipini ya da hatalı gelmişse hata mesajını clienta gönderir.
+
 ![create_action_result](create_action_result.png)
-Cyclomatic Complexityi düşürmek için if sayısını azaltacağız. Bu yüzden **CreateActionResult** içerisinde data yoksa null(içindeki response'ın bodysindeki dataya karşılık gelir) ve StatusCode = 204(no content) döner. Create dışındaki tüm metodları bu fonksiyon karşılayabilir. Create'de Id ve metod adı da döndüğümüz için onu önceki gibi ele alacağız.
+
+Cyclomatic Complexityi düşürmek için if sayısını azaltacağız. Bu yüzden **CreateActionResult** içerisinde data yoksa null (içindeki response'ın bodysindeki dataya karşılık gelir) ve StatusCode = 204 (no content) döner. Create dışındaki tüm metodları bu fonksiyon karşılayabilir.
 - Bu sayede diğer endpointlerdeki kodumuz aşağıdaki gibi sadeleşebilir:
 ![controller_new](controller_new.png)
 **Hatta böyle tek bir satırda lambda fonksiyonu bile olabilir:**
@@ -100,5 +104,13 @@ Cyclomatic Complexityi düşürmek için if sayısını azaltacağız. Bu yüzde
 ![http_put_new](http_put_new.png)
 
 - **Controllerdaki Update endpointlerini sadeleştirmek için aşağıdaki gibi basecontroller içerisinde bir CreateActionResult overloadı yazılması gerekir.**
+Response'ın headerında oluşturulan dataya erişmek ile ilgili bir data taşınabilir. 201 dışındaki hiçbir durumda bu geçerli değildir. Örneğin; Headers -> Location'da Id bulunabilir.
+methodName: "Controller adı", routeValues: "Route'da taşınan değer", response: "Body içindeki mesaj".
+- **CustomBaseController'da:**
 
-![update_basecontrolleroverload](update_basecontrolleroverload.png)
+![created_custombasecontroller](created_custombasecontroller.png)
+- **Onu inherit eden Controllerımızda:**
+
+    nameof(GetId) dendiği zaman GetId metodunu çağırır.✅
+
+![created_custombasecontroller2](created_custombasecontroller2.png)
