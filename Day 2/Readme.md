@@ -114,3 +114,59 @@ methodName: "Controller adı", routeValues: "Route'da taşınan değer", respons
     nameof(GetId) dendiği zaman GetId metodunu çağırır.✅
 
 ![created_custombasecontroller2](created_custombasecontroller2.png)
+
+## Kategori Bazlı Klasörleme
+
+![kategori_bazlı_klasörleme](kategori_bazlı_klasörleme.png)
+
+
+## Function Bazlı Klasörleme
+![functional_bazlı_klasörleme](functional_bazlı_klasörleme.png)
+
+# ModelBindingExample
+- Alttaki gibi ise requestin bodysinde UserDto kompleks tipi taşınır.
+![modelbinding](modelbinding.png)
+
+Class, Method, Property'e eklenen attributeler ile bunların davranışı değiştirilebilir.
+
+**1) [FromBody]:** Complex data types(class, record, struct) için default. (
+Üstteki gibi)
+
+**2) [FromHeader]:** Header'dan veri alır.(altta işlendi)
+
+**3) [FromQuery]:** QueryString'ten veri alır. Simple data types(bool, int, string, DateTime) için default.
+
+**4) [FromRoute]:**
+![alt text](image.png)
+
+- **Bunun için DTO'ya ve Endpoint'e eklenmesi gerekir.**
+
+![modelbindingcontrollerexampleuserdto](modelbindingcontrollerexampleuserdto.png)
+
+![userdto](userdto.png)
+
+![postmanuserdto](postmanuserdto.png)
+
+### **NOT:** Querystring'te taşınan veri **SSL** sertifikası olsa dahi şifrelenmez.
+## Şifrelenen yerler:
+
+**1) Request.Header** : Headera eklenip güvenli taşınabilir
+
+**Simple Data Type:**
+![headerda_taşıma](headerda_taşıma.png)
+![postman_headercarry](postman_headercarry.png)
+
+**Complex Data Type:**
+![postman_complex_datatype](postman_complex_datatype.png)
+
+**2) Request.Body**
+Body'den alabilmek için **"Get"** harici isteklerde bulunmalıyız.
+
+**3) Response.Header**
+
+**4) Response.Body**
+
+# Dependency Injection Containers
+IoC - Dependency Inversion
+Dependenct injection sayesinde soyut konsept olduğu için bağımlılığımız azalır. Örneğin:
+ProductsController, ctor metodunda IProductService'i implemente ederse datanın nereden geldiği önemli olmaz. Bu sayede bağımlılık azalır.
