@@ -65,18 +65,34 @@ In Visual Studio: [Analyze] -> [Calculate Code Metrics] -> [For Solution]
 ![response_checks](response_checks.png)
 
 ### **Response Model Edit:**
+- **Kendi iç methodlarımızda kullanacağız IsSuccess gibi. O yüzden [JsonIgnore]**
+
 ![status_code_addition](status_code_addition.png)
 
 ## Static Factory Methods: Success
+- **Default Ok**
+
 ![static_factory_success](static_factory_success.png)
 
 ## Static Factory Methods: Fail
+- **Badrequest 400 default dönmesi: Client error**
+
 ![static_factory_fail](static_factory_fail.png)
 
-**Ex: New Return Type for Create() Service method:**
+**Example: New Return Type for Create() Service method:**
+- Created gönderiliyor
 ![create_servicev2](create_servicev2.png)
 
 **Delete ve Update => HttpStatusCode.NoContent**
 
-object => Json : Serialization
-2:19:00
+Object => Json: Serialization
+Json => Object: Deserialization
+
+# BaseController Methods:
+ObjectResult içerisine ne verilirse o tipi döner. Generic bir sınıftır. Örneğin, StatusCode olarak 200 verirsek geriye 200 döner.
+![create_action_result](create_action_result.png)
+Cyclomatic Complexityi düşürmek için if sayısını azaltacağız. Bu yüzden **CreateActionResult** içerisinde data yoksa null(içindeki response'ın bodysindeki dataya karşılık gelir) ve StatusCode = 204(no content) döner. Create dışındaki tüm metodları bu fonksiyon karşılayabilir. Create'de Id ve metod adı da döndüğümüz için onu önceki gibi ele alacağız.
+- Bu sayede diğer endpointlerdeki kodumuz aşağıdaki gibi sadeleşebilir:
+![controller_new](controller_new.png)
+**Hatta böyle tek bir satırda lambda fonksiyonu bile olabilir:**
+![lambda_controller](lambda_controller.png)
