@@ -96,3 +96,9 @@ Cyclomatic Complexityi düşürmek için if sayısını azaltacağız. Bu yüzde
 ![controller_new](controller_new.png)
 **Hatta böyle tek bir satırda lambda fonksiyonu bile olabilir:**
 ![lambda_controller](lambda_controller.png)
+
+![http_put_new](http_put_new.png)
+
+- **Controllerdaki Update endpointlerini sadeleştirmek için aşağıdaki gibi basecontroller içerisinde bir CreateActionResult overloadı yazılması gerekir.**
+
+![update_basecontrolleroverload](update_basecontrolleroverload.png)
