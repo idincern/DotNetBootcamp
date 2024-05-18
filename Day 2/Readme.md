@@ -170,3 +170,5 @@ Body'den alabilmek için **"Get"** harici isteklerde bulunmalıyız.
 IoC - Dependency Inversion
 Dependenct injection sayesinde soyut konsept olduğu için bağımlılığımız azalır. Örneğin:
 ProductsController, ctor metodunda IProductService'i implemente ederse datanın nereden geldiği önemli olmaz. Bu sayede bağımlılık azalır.
+
+video saati: 04:00:00
