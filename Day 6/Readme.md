@@ -45,8 +45,23 @@ UserToken: Her userın tokenı ?
 
 UserLogins: Otomatik dolar. LoginProvider, ProviderKey, ProviderDisplayName ve UserId sütunları bulunur.
 
+![exuser](exuser.png)
+
 Şifreler her zaman tek yönlü algoritmalar ile hashlenir ve dbye öyle kaydedilir.
 Tek yönlü => Geriye dönülemez.
 Her şifre geldiğinde tekrardan hashleyip dbdeki ile karşılaştırma yapılır. Hiçbir zaman şifreyi çözüp geri elde edemeyiz(md5 sha256, sha512 örnek algoritmalar).
 
 ## **Not:** Metodları yazarken her zaman Fail-fast, guard clause yöntemini kullan.
+
+## **Not:** Index tabloları önemli => NonClusteredIndex: Where komutu kullanılan yerlerde buna geç aşırı performans artışı sağlanır.
+
+## **Not:** Azure ApplicationInsight özelliği - ya da Opentelemetry ya da Kubernetes gibi toollar requestin response'a dönmesine bakarak optimizasyon işlemlerini gerçekleştirebilriiz.
+
+## **Not:** Sistem yüke binmiyorsa asenkron koda geçmeye gerek yoktur.
+
+**Not:**
+0 55
+55534
+555 444
+...
+ telefon numarası numaraları için yeni bir sütun oluştur ve düzgün verileri buraya al => tablo oluşturma maliyetiyle hızı arttırırız. O da olmazsa cachelenebilir datalar.
