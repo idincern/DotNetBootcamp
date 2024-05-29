@@ -1,3 +1,0 @@
-- MikroJump gibi programları linux serverda çalıştırabilir miyiz?
-- Soru cevap kısmına katılamadım Environment Variables ve connectionstrings arasındaki ilişkiden bahsetmiş miydiniz?
-- .NET'de bulunan IDataProtected() interface'indeki metodları şifreleme konusunda kullanılabilir(Tokenlarda değinilecek).
