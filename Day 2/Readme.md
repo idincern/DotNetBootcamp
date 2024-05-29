@@ -90,10 +90,37 @@ In Visual Studio: [Analyze] -> [Calculate Code Metrics] -> [For Solution]
 **Json => Object: Deserialization**
 
 # BaseController Methods:
+ObjectResult: İçerisine ne tip status code parametre olarak verilirse ona bürünür. Response bodysine de data Json'a serialize edilerek eklenir.
 ObjectResult içerisine ne verilirse o tipi döner. Generic bir sınıftır. Örneğin, StatusCode olarak 200 verirsek geriye 200 döner.
 Aşağıdaki CreateActionResult metodu cyclomatic complexityi düşürmek için yazılmıştır. Mesaj tipine göre response tipini ya da hatalı gelmişse hata mesajını clienta gönderir.
 
-![create_action_result](create_action_result.png)
+```cs
+[Route("api/[controller]")]
+[ApiController]
+public class CustomBaseController : ControllerBase
+{
+    // GET, PUT, DELETE
+    public IActionResult CreateActionResult<T>(ResponseModelDto<T> response)
+    {
+        if (response.StatusCodes == HttpStatusCode.NoContent)
+        {
+            return new ObjectResult(null) { StatusCode = 204 }; // PUT, DELETE: Response bodysi boş
+        }
+        return new ObjectResult(response) { StatusCode = (int)response.StatusCodes }; // GET
+    }
+
+    // POST
+    public IActionResult CreateActionResult<T>(ResponseModelDto<T> response, string methodName,
+        object routeValues)
+    {
+        if (response.StatusCodes == HttpStatusCode.Created)
+        {
+            return CreatedAtAction(methodName, routeValues, response); // POST
+        }
+        return new ObjectResult(response) { StatusCode = (int)response.StatusCodes };
+    }
+}
+```
 
 Cyclomatic Complexityi düşürmek için if sayısını azaltacağız. Bu yüzden **CreateActionResult** içerisinde data yoksa null (içindeki response'ın bodysindeki dataya karşılık gelir) ve StatusCode = 204 (no content) döner. Create dışındaki tüm metodları bu fonksiyon karşılayabilir.
 - Bu sayede diğer endpointlerdeki kodumuz aşağıdaki gibi sadeleşebilir:
@@ -166,9 +193,38 @@ Body'den alabilmek için **"Get"** harici isteklerde bulunmalıyız.
 
 **4) Response.Body**
 
-# Dependency Injection Containers
-IoC - Dependency Inversion
-Dependenct injection sayesinde soyut konsept olduğu için bağımlılığımız azalır. Örneğin:
-ProductsController, ctor metodunda IProductService'i implemente ederse datanın nereden geldiği önemli olmaz. Bu sayede bağımlılık azalır.
 
-video saati: 04:00:00
+## Prensipler bir hedef gösterir, patternlar hedefe gidilen yolu gösterir.
+# Dependency Injection Containers
+- IoC + Dependency Inversion birbirini destekler.
+Dependency injection sayesinde soyut konsepte(interface:+++ soyutlama için daha uygun)/abstract class:ortak metod-property tanımlarken) bağımlı olduğumuz için somut bağımlılığımız azalır. Örneğin:
+ProductsController, ctor metodunda IProductService'i implemente ederse datanın nereden geldiği önemli olmaz. Bu sayede bağımlılık azalır.
+- Repository Design Pattern + Unit of Work birbirini destekler.
+- Event Sourcing + CQRS birbirini destekler.
+
+## DI Container Types:
+Nesneler framework tarafından initialize edilir/dispose edilir.
+
+1. **AddSingleton:** Uygulama ilk ayağa kalktığında veya uygulamanın herhangi bir ctorunda görüldüğü anda bir nesne ilk defa oluşturulur ve bu çağırmalarda programın ömrü boyunca memorydeki aynı nesne döner. Genellikle helper metodlarda kullanılır. Örn: KDV hesaplayıcı, SEO ile ilgili TR karakterleri temizleyen bir metod. Redis'deki ConnectionMultiplexer singletondur.
+2. **AddScoped (*):** Her requeste bir nesne oluşturur, ömrü response dönene kadardır. Controller, Service, Repository, DbContext hep scoped yaşam döngüsüne sahiptir. Aynı request içindeyken aynı servis birden fazla kez çağrılsa bile her seferinde aynı nesne döner.
+3. **AddTransient:** Her bir classın ctorunda görüldüğü her anda memorye nesne örneği eklenir(birden çok olabilir). Request response'a döndüğü anda hepsi silinir.
+
+```cs
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton<PriceCalculator>();
+```
+Static yerine Singleton yazmamızın sebebi: İlerde soyutlanabilir hale getirebilmek için. Bu ayrıca testlerinin yazılmasını da kolaylaştırır.
+
+
+```cs
+//baseUrl/api/products
+[HttpGet]
+public IActionResult GetAll([FromServices] PriceCalculator priceCalculator)
+{
+    return Ok(_productService.GetAllWithCalculatedTax(priceCalculator));
+}
+```
+**Burada [FromServices] ile Singleton nesne çekilip işlem yapılabiliyor. CTOR'da initialize etmedik çünkü diğer endpointler bu metodu kullanmayabilir. Yani metod initializer kullandık.**
+Bu sayede static metod kullanmak yerine bu yapılanmayı kullanabiliyoruz. Controllerda 1 kere çağırmamız yeterli. Singleton olduğu için diğer katmanlarda da bu nesne kullanılır.
+
